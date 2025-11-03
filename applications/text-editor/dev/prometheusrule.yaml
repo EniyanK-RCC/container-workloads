@@ -1,0 +1,70 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: text-editor-alerts
+  namespace: text-editor-app
+  labels:
+    app: text-editor
+    prometheus: k8s
+    role: alert-rules
+spec:
+  groups:
+  - name: text-editor.rules
+    interval: 30s
+    rules:
+    # Pod availability alert
+    - alert: Text-Editor-PodDown
+      expr: |
+        sum(up{job="text-editor", namespace="text-editor-app"}) == 0
+      for: 5m
+      labels:
+        severity: critical
+        app: text-editor
+      annotations:
+        summary: "text-editor has no running pods"
+        description: "All pods for text-editor in namespace text-editor-app are down"
+    
+    # High HTTP error rate
+    - alert: Text-Editor-HighErrorRate
+      expr: |
+        sum(rate(http_requests_total{job="text-editor", namespace="text-editor-app", status=~"5.."}[5m])) 
+        / 
+        sum(rate(http_requests_total{job="text-editor", namespace="text-editor-app"}[5m])) 
+        > 0.05
+      for: 10m
+      labels:
+        severity: warning
+        app: text-editor
+      annotations:
+        summary: "High HTTP 5xx error rate for text-editor"
+        description: "text-editor is experiencing {{ $value | humanizePercentage }} error rate"
+    
+    # High latency
+    - alert: Text-Editor-HighLatency
+      expr: |
+        histogram_quantile(0.95, 
+          sum(rate(http_request_duration_seconds_bucket{job="text-editor", namespace="text-editor-app"}[5m])) 
+          by (le)
+        ) > 1
+      for: 10m
+      labels:
+        severity: warning
+        app: text-editor
+      annotations:
+        summary: "High latency detected for text-editor"
+        description: "95th percentile latency is {{ $value | humanizeDuration }}"
+    
+    # High memory usage
+    - alert: Text-Editor-HighMemoryUsage
+      expr: |
+        sum(container_memory_working_set_bytes{namespace="text-editor-app", pod=~"text-editor-.*"}) 
+        / 
+        sum(container_spec_memory_limit_bytes{namespace="text-editor-app", pod=~"text-editor-.*"}) 
+        > 0.85
+      for: 15m
+      labels:
+        severity: warning
+        app: text-editor
+      annotations:
+        summary: "text-editor memory usage is high"
+        description: "Memory usage is at {{ $value | humanizePercentage }}"
