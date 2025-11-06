@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: text-editor-dev-monitoring
+  namespace: openshift-gitops
+  labels:
+    app: text-editor
+    environment: dev
+    team: dev_team
+    managed-by: monitoring-automation
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/EniyanK-RCC/container-workloads.git
+    targetRevision: main
+    path: applications/text-editor/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: text-editor-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+  revisionHistoryLimit: 10
