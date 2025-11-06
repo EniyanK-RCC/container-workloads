@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: text-editor
   endpoints:
-  - port: http
+  - port: metrics
     interval: 30s
     path: /metrics
     scheme: http
