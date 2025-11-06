@@ -10,8 +10,9 @@ spec:
   selector:
     matchLabels:
       app: text-editor
+      environment: []
   endpoints:
-  - port: metrics
+  - port: http
     interval: 30s
     path: /metrics
     scheme: http
