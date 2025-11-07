@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: text-editor-app
+
+resources:
+  - servicemonitor.yaml
+  - prometheusrule.yaml
+  - grafana-dashboard-cm.yaml
+  - grafana-instance.yaml
+  - grafana-dashboard-resource.yaml
+
+commonLabels:
+  app: text-editor
+  team: dev_team
+  env: dev
+  managed-by: monitoring-automation
+
