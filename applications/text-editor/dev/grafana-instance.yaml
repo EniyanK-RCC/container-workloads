@@ -6,7 +6,8 @@ metadata:
   labels:
     instance: text-editor
 spec:
-  route: {}
+  route: 
+    spec: {}
   config:
     log:
       mode: console
