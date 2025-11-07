@@ -12,7 +12,3 @@ resources:
 
 commonLabels:
   app: text-editor
-  team: dev_team
-  env: dev
-  managed-by: monitoring-automation
-
