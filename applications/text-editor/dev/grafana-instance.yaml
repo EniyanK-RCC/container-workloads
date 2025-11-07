@@ -6,8 +6,7 @@ metadata:
   labels:
     instance: text-editor
 spec:
-  ingress:
-    enabled: true
+  route: {}
   config:
     log:
       mode: console
