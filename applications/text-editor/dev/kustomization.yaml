@@ -9,4 +9,4 @@ resources:
   - grafana-dashboard-cm.yaml
   - grafana-instance.yaml
   - grafana-dashboard-resource.yaml
-  - prometheus-rules-patch.yaml
+  - prometheus-rule-patch.yaml
