@@ -1,0 +1,22 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: text-editor-grafana
+  namespace: text-editor-app
+  labels:
+    instance: text-editor
+spec:
+  route: {}
+  config:
+    log:
+      mode: console
+      level: warn
+  deployment:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: grafana
+              envFrom:
+                - secretRef:
+                    name: text-editor-grafana-admin-credentials
