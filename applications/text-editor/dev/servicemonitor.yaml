@@ -5,7 +5,7 @@ metadata:
   namespace: text-editor-app
   labels:
     app: text-editor
-    team: dev_team
+    team: text-editor-team
 spec:
   selector:
     matchLabels:
