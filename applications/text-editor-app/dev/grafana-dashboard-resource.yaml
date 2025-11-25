@@ -1,0 +1,14 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: text-editor-app-dashboard
+  namespace: text-editor-app
+  labels:
+    app: text-editor-app
+spec:
+  instanceSelector:
+    matchLabels:
+      instance: text-editor-app
+  configMapRef:
+    name: text-editor-app-dashboard
+    key: dashboard.json

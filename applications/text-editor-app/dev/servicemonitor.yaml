@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: text-editor-app-monitor
+  namespace: text-editor-app
+  labels:
+    app: text-editor-app
+    team: text-editor-team
+spec:
+  selector:
+    matchLabels:
+      app: text-editor-app
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+    scheme: http

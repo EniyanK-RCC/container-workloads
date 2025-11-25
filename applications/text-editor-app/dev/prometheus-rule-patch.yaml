@@ -1,0 +1,27 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: text-editor-app-prometheus-rule-patch
+  namespace: text-editor-app
+  labels:
+    app: text-editor-app
+    prometheus: k8s
+    role: alert-rules
+    environment: dev
+spec:
+  groups:
+  - name: dev.rules
+    interval: 15s
+    rules:
+    - alert: DevHighErrorRate
+      expr: |
+        sum(rate(http_requests_total{status=~"5.."}[5m])) 
+        / 
+        sum(rate(http_requests_total[5m])) 
+        > 0.10
+      for: 5m
+      labels:
+        severity: info
+      annotations:
+        summary: "Development environment high error rate"
+        description: "Error rate is {{ $value | humanizePercentage }} in dev"
