@@ -6,7 +6,7 @@ metadata:
   labels:
     managed-by: monitoring-automation
     alert-type: platform-default
-    team: dev_team
+    team: text-editor-team
 spec:
   groups:
   - name: platform.default.rules
